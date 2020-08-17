@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+
+
+{% block title %} Home {% endblock %}
+
+
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+
+            <div class="jumbotron p-3">
+
+                <h2>Agents </b>  <button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Add New Agent</button> </h2>
+
+
+                {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+                {% for message in messages %}
+
+                <div class="alert alert-success alert-dismissable" role="alert">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+
+                        <span aria-hidden="true">x</span>
+
+                    </button>
+
+
+                {{message}}
+
+
+                </div>
+
+
+                {% endfor %}
+
+                {% endif %}
+                {% endwith %}
+
+
+                <table class="table table-hover table-dark">
+
+                    <tr>
+
+                        <th>SNO</th>
+                        <th>AGENT</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+
+                    </tr>
+
+
+                   {% for rows in agent %}
+                    <tr>
+                        <td>{{rows[0]}}</td>
+                        <td>{{rows[1]}}</td>
+                        <td>{{rows[2]}}</td>
+
+                        <td>
+                            <a href="/update/{{rows.1}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{rows.1}}">Edit</a>
+                            <a href="/delete/{{rows.1}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaldelete{{rows.1}}">Delete</a>
+
+
+                        </td>
+
+                    </tr>
+                       <!--Model Delete-->
+                       <div id="modaldelete{{rows.1}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+
+
+      <div class="modal-content">
+
+
+         <div class="modal-header">
+
+
+            <h4 class="modal-title">Are You Sure To Delete ?</h4>
+
+
+         </div>
+
+
+         <div class="modal-body">
+
+
+            <form action="{{url_for('delete')}}" method="POST">
+
+
+               <div class="form-group">
+
+
+                  <label>Agent Name :</label>
+                   <h3> {{ rows.1 }}</h3>
+
+
+               </div>
+
+               <div class="form-group">
+
+
+                  <button class="btn btn-primary" type="submit">Delete</button>
+
+
+               </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+</div>
+
+
+                  <!-- Modal Edit Employee-->
+<div id="modaledit{{rows.1}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+
+
+      <div class="modal-content">
+
+
+         <div class="modal-header">
+
+
+            <h4 class="modal-title">Update Information</h4>
+
+
+         </div>
+
+
+         <div class="modal-body">
+
+
+            <form action="{{url_for('update')}}" method="POST">
+
+
+               <div class="form-group">
+
+
+                  <label>SNO:</label>
+                   <input type="hidden"  name="sno" value="{{rows.0}}">
+
+                  <input type="text" class="form-control" name="name" value="{{rows.0}}">
+
+
+               </div>
+
+
+
+               <div class="form-group">
+
+
+                  <label>AGENT:</label>
+
+                  <input type="text" class="form-control" name="agent" value="{{rows.1}}">
+
+
+               </div>
+
+
+               <div class="form-group">
+
+
+                  <label>AMOUNT:</label>
+
+                  <input type="text" class="form-control" name="amount" value="{{rows.2}}">
+
+
+               </div>
+
+
+               <div class="form-group">
+
+
+                  <button class="btn btn-primary" type="submit">Update</button>
+
+
+               </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+</div>
+
+
+                    {% endfor %}
+
+
+                </table>
+
+
+            </div>
+
+
+
+                  <!-- Modal Add Employee-->
+
+
+<div id="mymodal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+
+            <h4 class="modal-title">Add Agent</h4>
+         </div>
+         <div class="modal-body">
+
+            <form action="{{url_for('insert')}}" method="POST">
+
+
+               <div class="form-group">
+
+                  <label>SNO:</label>
+                  <input type="text" class="form-control" name="sno" required="1">
+
+
+               </div>
+
+
+                <div class="form-group">
+
+
+                  <label>AGENT:</label>
+                  <input type="text" class="form-control" name="agent" required="1">
+
+
+               </div>
+
+
+                <div class="form-group">
+
+
+                  <label>AOMUNT:</label>
+                  <input type="number" class="form-control" name="amount" required="1">
+
+
+               </div>
+
+
+
+               <div class="form-group">
+
+
+                  <button class="btn btn-primary" type="submit">Add Agent</button>
+
+
+               </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+
+</div>
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
